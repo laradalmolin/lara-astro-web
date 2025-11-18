@@ -10,24 +10,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20 # Using a standard LTS Node version
+      # ... (Checkout and Setup Node are unchanged)
 
       - name: Install dependencies
         run: npm install
+        working-directory: astro-site # <-- NEW LINE: Tells npm to run inside the 'astro-site' folder
 
       - name: Build Astro Site
         run: npm run build
+        working-directory: astro-site # <-- NEW LINE: Tells npm to run inside the 'astro-site' folder
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist' # Astro's default build directory is 'dist'
+          path: './astro-site/dist' # <-- UPDATED: The 'dist' folder is inside 'astro-site'
 
   deploy:
     environment:
