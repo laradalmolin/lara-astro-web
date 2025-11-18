@@ -1,47 +1,46 @@
-name: Deploy Astro Static Site
+name: Deploy Astro site to GitHub Pages
 
-# FIX: Set permissions at the global workflow level
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
   id-token: write
 
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
 
       - name: Install dependencies
-        run: npm install --prefix ./astro-site
+        working-directory: ./astro-site
+        run: npm install
 
-      - name: Build Astro Site
-        run: npm run build --prefix ./astro-site
+      - name: Build project
+        working-directory: ./astro-site
+        run: npm run build
 
-      - name: Upload Artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './astro-site/dist'
+          path: ./astro-site/dist
 
   deploy:
+    needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    # NOTE: Permissions were moved globally, so they are not repeated here.
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
