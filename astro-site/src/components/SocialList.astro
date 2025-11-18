@@ -1,0 +1,83 @@
+---
+import { Icon } from "astro-icon/components";
+
+/** Uses https://www.astroicon.dev/getting-started/
+	Find icons via guide: https://www.astroicon.dev/guides/customization/#open-source-icon-sets
+	Only installed pack is: @iconify-json/mdi
+*/
+const socialLinks: {
+	friendlyName: string;
+	isWebmention?: boolean;
+	link: string;
+	name: string;
+}[] = [
+	{
+		friendlyName: "Linkedin",
+		link: "https://www.linkedin.com/in/laradalmolin/",
+		name: "mdi:linkedin",
+	},
+	{
+		friendlyName: "Substack",
+		link: "https://substack.com/@laradalmolin",
+		name: "mdi:newspaper",
+	},
+		{
+		friendlyName: "Email",
+		link: "mailto:lara.dalmo@gmail.com",
+		name: "mdi:email",
+	},
+];
+---
+
+<div class="flex flex-wrap items-end gap-x-2">
+	<p>Read my short story "In Every Lifetime" on Substack </p>
+	<ul class="flex flex-1 items-center gap-x-2 sm:flex-initial">
+		{
+			socialLinks
+				.filter((item) => item.friendlyName === "Substack")
+				.map(({ friendlyName, isWebmention, link, name }) => (
+					<li class="flex">
+						<a
+							class="hover:text-link inline-block"
+							href={link}
+							rel={`noreferrer ${isWebmention ? "me authn" : ""}`}
+							target="_blank"
+						>
+							<Icon aria-hidden="true" class="h-8 w-8" focusable="false" name={name} />
+							<span class="sr-only">{friendlyName}</span>
+						</a>
+					</li>
+				))
+		}
+	</ul>
+</div>
+
+<div class="flex flex-wrap items-end gap-x-2 mt-4">
+	<p>Reach out via </p>
+	<ul class="flex flex-1 items-center gap-x-2 sm:flex-initial">
+		{
+			socialLinks
+				// This line now checks for both Linkedin AND Email
+				.filter((item) => item.friendlyName === "Linkedin" || item.friendlyName === "Email")
+				.map(({ friendlyName, isWebmention, link, name }) => (
+					<li class="flex">
+						<a
+							class="hover:text-link inline-block"
+							href={link}
+							rel={`noreferrer ${isWebmention ? "me authn" : ""}`}
+							target="_blank"
+						>
+							<Icon aria-hidden="true" class="h-8 w-8" focusable="false" name={name} />
+							<span class="sr-only">{friendlyName}</span>
+						</a>
+					</li>
+				))
+		}
+	</ul>
+</div>
+
+<div class="flex flex-wrap items-end gap-x-2 mt-7">
+	<p>
+		Download my CV <a class="hover:text-link underline underline-offset-4" href="/lara-cv.pdf" download="Lara_Dalmolin_CV">here</a>.
+	</p>
+</div>
