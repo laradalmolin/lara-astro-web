@@ -22,8 +22,8 @@ import { expressiveCodeOptions, siteConfig } from "./src/site.config";
 // https://astro.build/config
 export default defineConfig({
   // 🔹 Add this for GitHub Pages
-  base: "/lara-astro-web/",
-  site: siteConfig.url,
+  base: "/",
+  site: "https://www.laradalmolin.xyz",
   image: {
     domains: ["webmention.io"],
   },
